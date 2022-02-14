@@ -1,14 +1,14 @@
 const yelp = require('yelp-fusion');
 const request = require('request-promise');
-
+require('dotenv').config()
 const search = 'kfc'
 
-const movieAPIkey = '6c221930e1adc8e2c3d046a15e547b2e';
+console.log(process.env)
 
 //Checks if a string could be a movie
 //MovieAPI
 const movieAPICall = () => {
-  return request.get(`https://api.themoviedb.org/3/search/multi?api_key=${movieAPIkey}&query=${search}`)
+  return request.get(`https://api.themoviedb.org/3/search/multi?api_key=${process.env.movieAPIkey}&query=${search}`)
     .then (res => {
       console.log(`this is a ${JSON.parse(res).results[0].media_type}.`)
       return `this is a ${JSON.parse(res).results[0].media_type}.`
@@ -20,8 +20,6 @@ const movieAPICall = () => {
 
 //Checks if a string is a restaurant
 //Yelp
-const yelpApiKey = 'w8L3Eb9iX9rS4KnoOa530di5FSA7RVeEiclTzrwJ6D-h7MW-DqEfXb0ult_pWfMLVBjjScD8qNX0TqdbEg7_D_Uf2wI2sng1qH8GEAFvosXiW2HFm5dOeUoJtP0HYnYx';
-
 const yelpApiCall = () => {
 
   const searchRequest = {
@@ -32,7 +30,7 @@ const yelpApiCall = () => {
     alias: 'restaurant'
   };
 
-  const client = yelp.client(yelpApiKey);
+  const client = yelp.client(process.env.yelpApiKey);
 
   client.search(searchRequest)
     .then(response => {
@@ -53,10 +51,8 @@ const yelpApiCall = () => {
 
 //Checks if a string is a book
 // Wolfram
-const WolframappId = 'WY4Q9T-8W44L72HA8'
-
 const wolframApiCall = () => {
-  return request.get(`https://api.wolframalpha.com/v2/query?input=${search}&appid=${WolframappId}&output=json`)
+  return request.get(`https://api.wolframalpha.com/v2/query?input=${search}&appid=${process.env.WolframappId}&output=json`)
   .then( res => {
 
     ( JSON.parse(res).queryresult.assumptions.values ).forEach(element => {
