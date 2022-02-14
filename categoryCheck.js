@@ -1,22 +1,24 @@
 const yelp = require('yelp-fusion');
 const request = require('request-promise');
 require('dotenv').config()
-const search = 'kfc'
 
-console.log(process.env)
+
+const search = "the dark tower"
 
 //Checks if a string could be a movie
 //MovieAPI
 const movieAPICall = () => {
   return request.get(`https://api.themoviedb.org/3/search/multi?api_key=${process.env.movieAPIkey}&query=${search}`)
     .then (res => {
+      // console.log(res)
+      if (JSON.parse(res).results[0]) {
+
       console.log(`this is a ${JSON.parse(res).results[0].media_type}.`)
       return `this is a ${JSON.parse(res).results[0].media_type}.`
+      }
     })
     .catch( err => err)
 }
-
-
 
 //Checks if a string is a restaurant
 //Yelp
@@ -32,43 +34,80 @@ const yelpApiCall = () => {
 
   const client = yelp.client(process.env.yelpApiKey);
 
-  client.search(searchRequest)
+  return client.search(searchRequest)
     .then(response => {
-    const firstResult = response.jsonBody.businesses[0];
-    const prettyJson = JSON.stringify(firstResult, null, 4);
+      // console.log(response)
+      return response
 
-    if (JSON.parse(prettyJson).name.toLowerCase().replace(/'/g, '').split(' ').join('') == search.toLowerCase().replace(/'/g, '').split(' ').join('')) {
-      console.log('restaurant')
-      return 'restaurant';
-    };
   })
   .catch(e => {
     console.log(e);
   })
 };
 
+const APIresponseYelp = (data) => {
+  // console.log('YELP resonse JSON: ', data)
 
+  const firstResult = data.jsonBody.businesses[0];
+  if (!firstResult) {
+    return undefined
+  }
+
+  const prettyJson = JSON.stringify(firstResult, null, 4);
+
+  if (JSON.parse(prettyJson).name.toLowerCase().replace(/'/g, '').split(' ').join('') == search.toLowerCase().replace(/'/g, '').split(' ').join('')) {
+    // console.log('restaurant')
+
+    return 'restaurant';
+  };
+}
+
+const APIresponseBook = (data) => {
+  let result;
+  // console.log(data)
+
+  if (typeof data !== 'object') {
+    return undefined
+  }
+  data.forEach(element => {
+    // console.log(res)
+      return Object.values(element).find(string => {
+        if (string.includes('book')) {
+          // console.log('book array: ', element)
+          result = 'This is a book';
+        }
+      })
+    })
+    return result
+}
 
 //Checks if a string is a book
 // Wolfram
 const wolframApiCall = () => {
   return request.get(`https://api.wolframalpha.com/v2/query?input=${search}&appid=${process.env.WolframappId}&output=json`)
   .then( res => {
+    if (!JSON.parse(res).queryresult.assumptions) {
+      return undefined
+    }
 
-    ( JSON.parse(res).queryresult.assumptions.values ).forEach(element => {
-    // console.log(res)
-      Object.values(element).find(string => {
-        if (string.includes('book')) {
-          console.log('book array: ', element)
-          return 'This is a book'
-        }
-      })
-    })
+    return ( JSON.parse(res).queryresult.assumptions.values )
+
   })
   .catch( err => err)
 }
 
-Promise.all([yelpApiCall(), wolframApiCall(), movieAPICall()]).then((values) => {
+//resolves all promises together
+Promise.all([
+  yelpApiCall(),
+  wolframApiCall(),
+  movieAPICall()
 
-    console.log(values);
-  });
+]).then(values => {
+  const result = [];
+
+  result.push(APIresponseYelp(values[0]))
+  result.push(APIresponseBook(values[1]))
+  result.push(values[2])
+    console.log(result)
+    return result
+  })
