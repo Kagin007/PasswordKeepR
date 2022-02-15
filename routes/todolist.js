@@ -1,7 +1,8 @@
 const express = require('express');
 const res = require('express/lib/response');
 const router  = express.Router();
-const app = express()
+const app = express();
+const { categoryFinder } = require('../categoryCheck');
 
 // checking to see if i can push//
 
@@ -38,28 +39,26 @@ module.exports = (db) => {
       });
   });
 
-  router.post("/todo/", (req, res) => {
+  router.post("/todo/",  (req, res) => {
     const description = req.body.todoitem;
     console.log('we got here!', description)
 
-    
+    categoryFinder(description).then( category => {
 
-        const params = [1, 'restaurants', description, true, '2002-12-31', '2003-10-31']
-        db.query(`INSERT INTO todos (user_id, category, description, completed, created_date, completed_date) VALUES ($1, $2, $3, $4, $5, $6) Returning*;`, params)
-        .then( res => {
-          console.log('success1')
-          console.log('success: ', res.rows[0])
-          // return
-          params.push(res.rows[0])
-        })
-        .catch( err => {
-          console.log(err)
-          console.log(err.message)
-        })
-    // }
-  })
-
-
+      const params = [1, category, description, true, '2002-12-31', '2003-10-31']
+      db.query(`INSERT INTO todos (user_id, category, description, completed, created_date, completed_date) VALUES ($1, $2, $3, $4, $5, $6) Returning*;`, params)
+      .then( res => {
+        console.log('success1')
+        console.log('success: ', res.rows[0])
+        // return
+        params.push(res.rows[0])
+      })
+      .catch( err => {
+        console.log(err)
+        console.log(err.message)
+      })
+    })
+    })
 
   return router;
 
