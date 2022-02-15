@@ -124,16 +124,9 @@ const categoryFinder = (search) => {
       console.log(values[2])
       return values[2]
     } else {
-      console.log('products')
       return 'product'
     }
-    // const result = [];
 
-    // result.push(APIresponseYelp(values[0]))
-    // result.push(APIresponseBook(values[1]))
-    // result.push(values[2])
-    //   console.log(result)
-    //   return result;
     })
     .catch((err) => console.log(err));
 };

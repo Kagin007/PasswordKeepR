@@ -27,3 +27,20 @@ module.exports = (db) => {
   return router;
 };
 
+//main page that displays user's list of URLS.
+
+// ** FROM TINY APP
+// app.get("/user", (req, res) => {
+//   const cookiesUser = req.session.userID;
+//   //if user is not logged in they are redirected to the register page
+//   const userUrls = filterUserID(urlDatabase, cookiesUser);
+//   const templateVars = {
+//     user: users[cookiesUser],
+//     urls: userUrls,
+//   };
+//   if (cookiesUser) {
+//     res.render("urls_index", templateVars);
+//   } else {
+//     res.render("not_logged_in", templateVars);
+//   }
+// });
