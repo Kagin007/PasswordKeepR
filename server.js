@@ -15,6 +15,9 @@ const dbParams = require("./lib/db.js");
 const db = new Pool(dbParams);
 db.connect();
 
+// database helper query functions
+const { databaseQuery } = require("./helpers.js")
+
 console.log(dbParams)
 
 // Load the logger first so all (static) HTTP requests are logged to STDOUT
@@ -71,66 +74,42 @@ app.get("/register", (req, res) => {
 
 app.get("/main", (req, res) => {
   //need a function that filters by user/cookies
+    return Promise.all([
+      databaseQuery('movie or tv'),
+      databaseQuery('restaurant'),
+      databaseQuery('book'),
+      databaseQuery('product')])
+      .then( response => {
 
-    db.query(`SELECT * FROM todos;`)
-    .then( response => {
-      console.log('SELECT: ', response.rows[0])
-      // return
-      const userToDos = response.rows[0]
+        const templateVars = {
+          movie: response[0],
+          restaurant: response[1],
+          book: response[2],
+          product: response[3]
+        }
 
-      const templateVars = {
-        data: userToDos,
-      };
+        res.render("main", templateVars)
+      })
 
-      res.render("main", templateVars)
+    // databaseQuery('movie or tv', 1)
+    // .then( response => {
+    //   // return
+    //   const userToDos = response
+    //   console.log(userToDos)
+    //   const templateVars = {
+    //     data: userToDos,
+    //   };
 
-      // return response
-    })
-    .catch( err => {
-      console.log(err)
-      console.log(err.message)
-    })
+    //   res.render("main", templateVars)
+
+    // })
+    // .catch( err => {
+    //   console.log(err)
+    //   console.log(err.message)
+    // })
 
 })
 
-app.get("/urls", (req, res) => {
-  const cookiesUser = req.session.userID;
-  //if user is not logged in they are redirected to the register page
-  const userUrls = filterUserID(urlDatabase, cookiesUser);
-  const templateVars = {
-    user: users[cookiesUser],
-    urls: userUrls,
-  };
-  if (cookiesUser) {
-    res.render("urls_index", templateVars);
-  } else {
-    res.render("not_logged_in", templateVars);
-  }
-});
-
-// app.post("/todo"), (req, res) => {
-//   const description = req.body.todoitem;
-
-//   const addTodo =  function(user='Adam', description="mcDonalds") {
-//     return db
-//       .query(
-//         `INSERT INTO todos (name, email, category, description, completed, created_date, completed_date)
-//         VALUES ($1, $2, $3, $4, $5, $6, $7)
-//         RETURNING *`, ['user.name', 'user.email', 'temp-category', 'description', 'false', 'temp-date', 'temp-date'] )
-
-//       .then( res => {
-//         console.log(res.rows)
-//         return res.rows[0]
-//       })
-//       .catch( err => {
-//         return err.message
-//       })
-//   }
-// }
-
-// app.get("/main", (req, res) => {
-//   res.render('test')
-// })
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);

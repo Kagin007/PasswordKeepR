@@ -48,15 +48,18 @@
   <div>
     <table>
       <tbody>
+
         <tr>
           <th> <a> Film/ Tv Series </a> </th>
         </tr>
+        <% for(let index in movie) { %>
         <tr>
-          <td>1.
-            <%= data.description %>
           <td>
-            <form method="POST" ><button type="submit" class="btn btn-outline-primary"> Complete </button></form></td></td>
+            To watch <%= movie[index].description %>
+          <td>
+            <form method="POST" action="/api/todos/complete/<%=movie[index].id %>/"><button type="submit" class="btn btn-outline-primary"> Complete </button></form></td></td>
         </tr>
+        <% } %>
       </tbody>
     </table>
   </div>
@@ -67,10 +70,19 @@
         <tr>
           <th> <a> Restaurant </a> </th>
         </tr>
-        <tr>
-          <td>1 <td><form method="POST" ><button type="submit" class="btn btn-outline-primary"> Complete </button></form></td></td>
-        </tr>
+        <% for(let index in restaurant) { %>
+          <tr>
 
+            <td>
+              To eat <%= restaurant[index].description %>
+            <td>
+              <form method="POST" action="/api/todos/complete/<%=restaurant[index].id %>/">
+                <button type="submit" class="btn btn-outline-primary"> Complete </button>
+              </form>
+            </td>
+            </td>
+          </tr>
+        <% } %>
       </tbody>
     </table>
   </div>
@@ -81,10 +93,14 @@
           <th> <a> Books </a> </th>
         </tr>
 
-        <tr>
-          <td>1 <td><form method="POST" ><button type="submit" class="btn btn-outline-primary"> Complete </button></form></td></td>
-        </tr>
-
+        <% for(let index in book) { %>
+          <tr>
+            <td>
+              To read <%= book[index].description %>
+            <td>
+              <form method="POST" action="/api/todos/complete/<%=book[index].id %>/" ><button type="submit" class="btn btn-outline-primary"> Complete </button></form></td></td>
+          </tr>
+          <% } %>
       </tbody>
     </table>
   </div>
@@ -94,11 +110,14 @@
         <tr>
           <th> <a> Products </a> </th>
         </tr>
-
-        <tr>
-          <td>1 <td><form method="POST" ><button type="submit" class="btn btn-outline-primary"> Complete </button></form></td></td>
-        </tr>
-
+        <% for(let index in product) { %>
+          <tr>
+            <td>
+              To buy <%= product[index].description %>
+            <td>
+              <form method="POST" action="/api/todos/complete/<%=product[index].id %>/"><button type="submit" class="btn btn-outline-primary"> Complete </button></form></td></td>
+          </tr>
+          <% } %>
       </tbody>
     </table>
   </div>
