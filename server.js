@@ -7,6 +7,7 @@ const sassMiddleware = require("./lib/sass-middleware");
 const express = require("express");
 const app = express();
 const morgan = require("morgan");
+// const bodyParser = require('body-parser');
 
 // PG database client/connection setup
 const { Pool } = require("pg");
@@ -42,12 +43,12 @@ const todosRoutes = require("./routes/todolist");
 const widgetsRoutes = require("./routes/widgets");
 
 //add todo
-app.use("/api/addToDo", todosRoutes(db))
+// app.use("/api/addToDo", todosRoutes(db))
 
 // Mount all resource routes
 // Note: Feel free to replace the example routes below with your own
 app.use("/api/users", usersRoutes(db));
-app.use("/api/users/todos", todosRoutes(db));
+app.use("/api/todos", todosRoutes(db));
 app.use("/api/widgets", widgetsRoutes(db));
 
 // Note: mount other resources here, using the same pattern above
@@ -59,6 +60,42 @@ app.use("/api/widgets", widgetsRoutes(db));
 app.get("/", (req, res) => {
   res.render("index");
 });
+
+app.get("/login", (req, res) => {
+  res.render('login')
+})
+
+app.get("/register", (req, res) => {
+  res.render('registration')
+})
+
+app.get("/main", (req, res) => {
+  res.render('main')
+})
+
+// app.post("/todo"), (req, res) => {
+//   const description = req.body.todoitem;
+
+//   const addTodo =  function(user='Adam', description="mcDonalds") {
+//     return db
+//       .query(
+//         `INSERT INTO todos (name, email, category, description, completed, created_date, completed_date)
+//         VALUES ($1, $2, $3, $4, $5, $6, $7)
+//         RETURNING *`, ['user.name', 'user.email', 'temp-category', 'description', 'false', 'temp-date', 'temp-date'] )
+
+//       .then( res => {
+//         console.log(res.rows)
+//         return res.rows[0]
+//       })
+//       .catch( err => {
+//         return err.message
+//       })
+//   }
+// }
+
+// app.get("/main", (req, res) => {
+//   res.render('test')
+// })
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
