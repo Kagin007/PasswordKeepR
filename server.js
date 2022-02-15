@@ -70,8 +70,43 @@ app.get("/register", (req, res) => {
 })
 
 app.get("/main", (req, res) => {
-  res.render('main')
+  //need a function that filters by user/cookies
+
+    db.query(`SELECT * FROM todos;`)
+    .then( response => {
+      console.log('SELECT: ', response.rows[0])
+      // return
+      const userToDos = response.rows[0]
+
+      const templateVars = {
+        data: userToDos,
+      };
+
+      res.render("main", templateVars)
+
+      // return response
+    })
+    .catch( err => {
+      console.log(err)
+      console.log(err.message)
+    })
+
 })
+
+app.get("/urls", (req, res) => {
+  const cookiesUser = req.session.userID;
+  //if user is not logged in they are redirected to the register page
+  const userUrls = filterUserID(urlDatabase, cookiesUser);
+  const templateVars = {
+    user: users[cookiesUser],
+    urls: userUrls,
+  };
+  if (cookiesUser) {
+    res.render("urls_index", templateVars);
+  } else {
+    res.render("not_logged_in", templateVars);
+  }
+});
 
 // app.post("/todo"), (req, res) => {
 //   const description = req.body.todoitem;
