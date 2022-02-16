@@ -1,8 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="/styles/main.css">
+
+  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
 
   <style>
+
     button {
       background-color: rgb(91, 84, 80);
       font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
@@ -32,6 +36,30 @@
     />
 
     <title>Login Smart-ToDo-List</title>
+
+    <script type="text/javascript" src="../dragRows.js"></script>
+
+    <script>
+      $(document).ready(function() {
+
+        $('#movies, #restaurants, #books, #products').sortable({
+        connectWith: '.sortable',
+        items: 'tr:not(:first)',
+        cursor: 'move',
+        helper: 'clone',
+        update: function(event, ui) {
+          let data = $(this).sortable('serialize');
+
+          $.ajax({
+            data: data,
+            type: 'POST',
+            url: '/todo/'
+          })
+        }
+        }).disableSelection()
+      })
+      </script>
+
   </head>
 
   <body>
@@ -45,9 +73,9 @@
     </form>
 
 <div class='main-body'>
-  <div>
+  <div class="container" >
     <table>
-      <tbody>
+      <tbody id="movies" class="sortable">
 
         <tr>
           <th> <a> Film/ Tv Series </a> </th>
@@ -63,15 +91,20 @@
       </tbody>
     </table>
   </div>
-  <div>
+  <div class= "container" >
     <table>
-      <tbody>
 
-        <tr>
+      <tbody id="restaurants" class="sortable">
+
+
           <th> <a> Restaurant </a> </th>
-        </tr>
+
+        <tr></tr>
         <% for(let index in restaurant) { %>
           <tr>
+            <tr>
+
+            </tr>
 
             <td>
               To eat <%= restaurant[index].description %>
@@ -86,9 +119,9 @@
       </tbody>
     </table>
   </div>
-  <div>
+  <div class="container" >
     <table>
-      <tbody>
+      <tbody id="books" class="sortable">
         <tr>
           <th> <a> Books </a> </th>
         </tr>
@@ -98,31 +131,44 @@
             <td>
               To read <%= book[index].description %>
             <td>
-              <form method="POST" action="/api/todos/complete/<%=book[index].id %>/" ><button type="submit" class="btn btn-outline-primary"> Complete </button></form></td></td>
+              <form method="POST" action="/api/todos/complete/<%=book[index].id %>/" >
+                <button type="submit" class="btn btn-outline-primary">
+                   Complete
+                </button>
+              </form>
+            </td>
+          </td>
           </tr>
-          <% } %>
+        <% } %>
       </tbody>
     </table>
   </div>
-  <div>
+  <div class="container" >
     <table>
-      <tbody>
+      <tbody id="products" class="sortable">
         <tr>
           <th> <a> Products </a> </th>
         </tr>
         <% for(let index in product) { %>
           <tr>
-            <td>
+            <td >
               To buy <%= product[index].description %>
             <td>
-              <form method="POST" action="/api/todos/complete/<%=product[index].id %>/"><button type="submit" class="btn btn-outline-primary"> Complete </button></form></td></td>
+              <form method="POST" action="/api/todos/complete/<%=product[index].id %>/">
+                <button type="submit" class="btn btn-outline-primary">
+                  Complete
+                </button>
+              </form></td></td>
           </tr>
           <% } %>
       </tbody>
     </table>
   </div>
 </div>
-
+  <script>
+    feather.replace()
+  </script>
+    <script type="text/javascript" scr="../draggableTableRows.js"></script>
 
   </body>
 </html>

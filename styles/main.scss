@@ -17,8 +17,22 @@ $color: rgb(216, 216, 231);
   color: black;
 
   div {
-    margin: auto;
+    margin: 10px;
     padding: 3px;
     border: 2px solid black;
   }
+}
+
+.feather {
+  width: 24px;
+  height: 24px;
+  stroke: blue;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+}
+
+tr {
+  cursor:pointer;
 }

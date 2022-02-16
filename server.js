@@ -89,25 +89,7 @@ app.get("/main", (req, res) => {
         }
 
         res.render("main", templateVars)
-      })
-
-    // databaseQuery('movie or tv', 1)
-    // .then( response => {
-    //   // return
-    //   const userToDos = response
-    //   console.log(userToDos)
-    //   const templateVars = {
-    //     data: userToDos,
-    //   };
-
-    //   res.render("main", templateVars)
-
-    // })
-    // .catch( err => {
-    //   console.log(err)
-    //   console.log(err.message)
-    // })
-
+    })
 })
 
 
