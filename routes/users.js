@@ -7,6 +7,7 @@
 
 const express = require('express');
 const router  = express.Router();
+// const bcrypt = require('bcrypt');
 
 module.exports = (db) => {
   router.get("/", (req, res) => {
@@ -26,6 +27,12 @@ module.exports = (db) => {
   });
   return router;
 };
+
+router.get("/newUser", (req, res) => {
+
+  res.render('register');
+});
+////////// see if i can register a new user/////
 
 //main page that displays user's list of URLS.
 
