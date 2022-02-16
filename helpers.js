@@ -5,10 +5,10 @@ const dbParams = require("./lib/db.js");
 const db = new Pool(dbParams);
 
 
-const databaseQuery = (restaurant, user=1) => {
+const databaseQuery = (category, user=1) => {
   return db.query(
     `SELECT * FROM todos
-    WHERE category = '${restaurant}'
+    WHERE category = '${category}'
     AND user_id = ${user}
     AND completed = false;`
   ).then(res => {
@@ -17,6 +17,5 @@ const databaseQuery = (restaurant, user=1) => {
   .catch()
 };
 
-// databaseQuery('restaurant')
 
 module.exports = { databaseQuery }

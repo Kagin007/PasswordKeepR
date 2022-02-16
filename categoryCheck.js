@@ -16,7 +16,7 @@ const categoryFinder = (search) => {
         if (JSON.parse(res).results[0]) {
 
         // console.log(`this is a ${JSON.parse(res).results[0].media_type}.`)
-        return 'movie or tv'
+        return 'movie'
         // return `this is a ${JSON.parse(res).results[0].media_type}.`
         }
       })

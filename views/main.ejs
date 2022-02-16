@@ -37,27 +37,39 @@
 
     <title>Login Smart-ToDo-List</title>
 
-    <script type="text/javascript" src="../dragRows.js"></script>
+    <!-- <script type="text/javascript" src="../dragRows.js"></script> -->
 
     <script>
       $(document).ready(function() {
 
-        $('#movies, #restaurants, #books, #products').sortable({
-        connectWith: '.sortable',
-        items: 'tr:not(:first)',
-        cursor: 'move',
-        helper: 'clone',
-        update: function(event, ui) {
-          let data = $(this).sortable('serialize');
+        $('#movie, #restaurant, #book, #product').sortable({
+          connectWith: '.sortable',
+          items: 'tr:not(:first)',
+          // cursor: 'move',
+          // helper: 'clone',
 
-          $.ajax({
-            data: data,
-            type: 'POST',
-            url: '/todo/'
-          })
-        }
-        }).disableSelection()
-      })
+        stop: function(event, ui) {
+          // debugger
+          let dataOrder = $(this).sortable('toArray')
+
+          // params = $('.sortable').serializeArray(),
+          // console.log('test test')
+            $.ajax({
+              type: 'POST',
+              data: {
+                data: {
+                  category: ui.item[0].parentElement.id,
+                  id: ui.item[0].id
+                }
+              },
+              url: `/main`,
+              success: function(msg) {
+                console.log('test test')
+              }
+            })
+          }
+          }).disableSelection()
+        })
       </script>
 
   </head>
@@ -75,13 +87,13 @@
 <div class='main-body'>
   <div class="container" >
     <table>
-      <tbody id="movies" class="sortable">
+      <tbody id="movie" class="sortable">
 
         <tr>
           <th> <a> Film/ Tv Series </a> </th>
         </tr>
         <% for(let index in movie) { %>
-        <tr>
+        <tr id="<%=movie[index].id %>">
           <td>
             To watch <%= movie[index].description %>
           <td>
@@ -94,14 +106,14 @@
   <div class= "container" >
     <table>
 
-      <tbody id="restaurants" class="sortable">
+      <tbody id="restaurant" class="sortable">
 
 
           <th> <a> Restaurant </a> </th>
 
         <tr></tr>
         <% for(let index in restaurant) { %>
-          <tr>
+          <tr id="<%=restaurant[index].id %>">
             <tr>
 
             </tr>
@@ -121,13 +133,13 @@
   </div>
   <div class="container" >
     <table>
-      <tbody id="books" class="sortable">
+      <tbody id="book" class="sortable">
         <tr>
           <th> <a> Books </a> </th>
         </tr>
 
         <% for(let index in book) { %>
-          <tr>
+          <tr id="<%=book[index].id %>">
             <td>
               To read <%= book[index].description %>
             <td>
@@ -145,12 +157,12 @@
   </div>
   <div class="container" >
     <table>
-      <tbody id="products" class="sortable">
+      <tbody id="product" class="sortable">
         <tr>
           <th> <a> Products </a> </th>
         </tr>
         <% for(let index in product) { %>
-          <tr>
+          <tr id="<%=product[index].id %>">
             <td >
               To buy <%= product[index].description %>
             <td>
