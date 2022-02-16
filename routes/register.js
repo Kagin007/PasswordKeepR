@@ -8,6 +8,7 @@
 const express = require('express');
 const router  = express.Router();
 const app = express()
+const bcrypt = require('bcrypt');
 
 module.exports = (db) => {
   router.get("/", (req, res) => {
@@ -30,3 +31,5 @@ module.exports = (db) => {
   })
   return router;
 };
+
+

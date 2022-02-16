@@ -8,6 +8,7 @@
 const express = require('express');
 const router  = express.Router();
 const app = express()
+const bcrypt = require('bcrypt');
 
 module.exports = (db) => {
   router.get("/", (req, res) => {
@@ -28,5 +29,24 @@ module.exports = (db) => {
     // This is where we need to set a cookie
 
   })
-  return router;
+
+router.post('/', (req, res) => {
+  const { email, password } = req.body;
+  console.log(userLogin);
+  userLogin(email, password, db)
+    .then(user => {
+      console.log(user);
+      if (!user) {
+        res.send({ error: "error" });
+        return;
+      }
+      req.session.userId = user.id;
+      return res.redirect("/");
+    })
+    .catch(error => res.send(error));
+});
+
+return router;
 };
+
+
