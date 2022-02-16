@@ -34,9 +34,10 @@
 
   <body>
     <%- include('partials/header'); %>
-    <h2>Sign up</h2>
-    <form action="/register" method="post">
+    <h2>Register</h2>
+    <form action="/api/register" method="post">
       <input type="email" name="email" placeholder="Enter your e-mail" />
+      <input type="text" name="name" placeholder="enter your name" />
       <input
         type="password"
         name="password"
