@@ -1,6 +1,9 @@
 // load .env data into process.env
 require("dotenv").config();
 
+//body parser for post
+var bodyParser = require('body-parser')
+
 // Web server config
 const PORT = process.env.PORT || 8080;
 const sassMiddleware = require("./lib/sass-middleware");
@@ -27,6 +30,9 @@ app.use(morgan("dev"));
 
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
+
+//body parser
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(
   "/styles",
@@ -79,12 +85,12 @@ app.get("/register", (req, res) => {
 app.get("/main", (req, res) => {
   //need a function that filters by user/cookies
     return Promise.all([
-      databaseQuery('movie or tv'),
+      databaseQuery('movie'),
       databaseQuery('restaurant'),
       databaseQuery('book'),
       databaseQuery('product')])
       .then( response => {
-
+        // console.log('response', response)
         const templateVars = {
           movie: response[0],
           restaurant: response[1],
@@ -94,7 +100,21 @@ app.get("/main", (req, res) => {
 
         res.render("main", templateVars)
     })
-})
+});
+
+app.post("/main", (req, res) => {
+  // console.log('res', res)
+  const newCategory = req.body.data.category
+  const todoId = req.body.data.id
+
+  console.log(req.body.data)
+
+  db.query(`UPDATE todos
+            SET category = '${newCategory}'
+            WHERE id = ${todoId};`)
+
+});
+
 
 
 app.listen(PORT, () => {
