@@ -23,28 +23,29 @@ module.exports = (db) => {
 
     res.render('../views/login.ejs', templateVars)
   });
-  router.post("/push", (req, res) => {
+  router.post("/", (req, res) => {
+    console.log(req.body)
+    const email = req.body.email
+    const password = req.body.password
 
+    console.log(email)
+    console.log(password)
 
-    // This is where we need to set a cookie
+    const params = [email, password]
+      db.query(`SELECT * FROM users (name, email, password) VALUES ($1, $2, $3) Returning*;`, params)
+      .then( res => {
+        console.log('success: ', res.rows[0])
+        // return
+        params.push(res.rows[0])
+
+      })
+      .catch( err => {
+        console.log(err)
+        console.log(err.message)
+      })
+      res.redirect("/main")
 
   })
-
-router.post('/', (req, res) => {
-  const { email, password } = req.body;
-  console.log(userLogin);
-  userLogin(email, password, db)
-    .then(user => {
-      console.log(user);
-      if (!user) {
-        res.send({ error: "error" });
-        return;
-      }
-      req.session.userId = user.id;
-      return res.redirect("/");
-    })
-    .catch(error => res.send(error));
-});
 
 return router;
 };

@@ -44,7 +44,7 @@ module.exports = (db) => {
         console.log(err)
         console.log(err.message)
       })
-      res.redirect("/main")
+      res.redirect("/login")
     // })
 
 
