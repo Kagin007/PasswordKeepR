@@ -1,5 +1,11 @@
-LHL Node Skeleton
+SMART To-DO List
 =========
+
+## SMART To-Do
+
+An app that automatically categorizes your todos.
+
+![to-do](https://github.com/Kagin007/Smart-TODO-List/blob/master/add-to-do.gif?raw=true)
 
 ## Project Setup
 
