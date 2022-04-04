@@ -45,15 +45,9 @@
         $('#movie, #restaurant, #book, #product').sortable({
           connectWith: '.sortable',
           items: 'tr:not(:first)',
-          // cursor: 'move',
-          // helper: 'clone',
 
         stop: function(event, ui) {
-          // debugger
-          let dataOrder = $(this).sortable('toArray')
-
-          // params = $('.sortable').serializeArray(),
-          // console.log('test test')
+          // let dataOrder = $(this).sortable('toArray')
             $.ajax({
               type: 'POST',
               data: {
@@ -85,13 +79,13 @@
     </form>
 
 <div class='main-body'>
-  <div class="container" >
+  <div class="container">
+
     <table>
       <tbody id="movie" class="sortable">
-
-        <tr>
-          <th> <a> Film/ Tv Series </a> </th>
-        </tr>
+        <!-- <tr> -->
+          <th id="header"> <a> Film/ Tv Series </a> </th>
+        <!-- </tr> -->
         <% for(let index in movie) { %>
         <tr id="<%=movie[index].id %>">
           <td>
@@ -109,7 +103,7 @@
       <tbody id="restaurant" class="sortable">
 
 
-          <th> <a> Restaurant </a> </th>
+          <th id="header"> <a> Restaurant </a> </th>
 
         <tr></tr>
         <% for(let index in restaurant) { %>
@@ -135,7 +129,7 @@
     <table>
       <tbody id="book" class="sortable">
         <tr>
-          <th> <a> Books </a> </th>
+          <th id="header"> <a> Books </a> </th>
         </tr>
 
         <% for(let index in book) { %>
@@ -159,7 +153,7 @@
     <table>
       <tbody id="product" class="sortable">
         <tr>
-          <th> <a> Products </a> </th>
+          <th id="header"> <a> Products </a> </th>
         </tr>
         <% for(let index in product) { %>
           <tr id="<%=product[index].id %>">

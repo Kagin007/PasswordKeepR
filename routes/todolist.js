@@ -43,11 +43,11 @@ module.exports = (db) => {
     const description = req.body.todoitem;
     categoryFinder(description).then( category => {
 
-      const params = [1, category, description, false, '2002-12-31', '2003-10-31']
+      const params = [1, category, description, false, '2002-10-30', '2003-10-31']
       db.query(`INSERT INTO todos (user_id, category, description, completed, created_date, completed_date) VALUES ($1, $2, $3, $4, $5, $6) Returning*;`, params)
       .then( res => {
         console.log('success: ', res.rows[0])
-        // return
+
         params.push(res.rows[0])
 
       })
@@ -69,6 +69,7 @@ module.exports = (db) => {
 
     res.redirect("/main")
   })
+
 
   return router;
 

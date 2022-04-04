@@ -9,10 +9,8 @@ $color: rgb(216, 216, 231);
 //   background: $color;
 // }
 
-
 .main-body {
   display: flex;
-
   font-family: Arial, Helvetica, sans-serif;
   color: black;
 
@@ -23,16 +21,8 @@ $color: rgb(216, 216, 231);
   }
 }
 
-.feather {
-  width: 24px;
-  height: 24px;
-  stroke: blue;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  fill: none;
-}
-
 tr {
   cursor:pointer;
 }
+
+
